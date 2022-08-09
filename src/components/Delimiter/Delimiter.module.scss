@@ -1,0 +1,11 @@
+.delimiter {
+  position: absolute;
+  right: 0;
+  top: -15px;
+
+  svg {
+    path {
+      stroke: var(--froly);
+    }
+  }
+}

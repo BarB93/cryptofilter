@@ -1,0 +1,36 @@
+.container {
+  padding: 20px;
+  border: 1px solid var(--black);
+  border-radius: 10px;
+}
+
+.filterBlock {
+  &.to {
+    position: relative;
+    margin-top: 40px;
+  }
+}
+
+.title {
+  color: var(--carnation);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.filterList {
+  display: flex;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.filterItem {
+  font-size: 0.87rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &.active {
+    background-color: var(--froly);
+    color: #fff;
+  }
+}
