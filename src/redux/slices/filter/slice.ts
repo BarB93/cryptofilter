@@ -29,6 +29,7 @@ const filterSlice = createSlice({
     },
     setCategoryToId: (state, action: PayloadAction<number>) => {
       state.categoryToId = action.payload
+      checkFilter(state)
     },
     setCurrentFrom: (state, action: PayloadAction<DirectionsItem | null>) => {
       state.currentFrom = action.payload
@@ -66,12 +67,6 @@ function checkFilter(state: FilterSliceState) {
     switch (state.categoryFromId) {
       case 0:
         state.currentDirections = state.directions
-        state.currentFilter =
-          state.filter.find((item) => {
-            debugger
-            return item.from.code === state.currentFrom?.code
-          })?.to || []
-
         break
       case 1:
         state.currentDirections = state.directions.filter((item) =>
@@ -88,19 +83,51 @@ function checkFilter(state: FilterSliceState) {
           bankCodes.includes(item.code),
         )
         break
+      case 4:
+        state.currentDirections = []
+        state.currentFilter = []
+        return
       default:
         state.currentDirections = []
         state.currentFilter = []
         break
     }
 
-    // const filterItem = state.filter.filter(
-    //   (item) => item.from.code === state.currentFrom?.code,
-    // )
+    state.currentFilter =
+      state.filter.find((item) => {
+        return item.from.code === state.currentFrom?.code
+      })?.to || []
 
-    // if (filterItem) {
-    //   state.currentTo = filterItem[0].to
-    // }
+    if (state.categoryToId) {
+      switch (state.categoryToId) {
+        case 0:
+          state.currentFilter =
+            state.filter.find((item) => {
+              return item.from.code === state.currentFrom?.code
+            })?.to || []
+          break
+        case 1:
+          state.currentFilter = state.currentFilter.filter((item) =>
+            cryptoCodes.includes(item.code),
+          )
+          break
+        case 2:
+          state.currentFilter = state.currentFilter.filter((item) =>
+            bankCodes.includes(item.code),
+          )
+          break
+        case 3:
+          state.currentFilter = []
+          break
+        case 4:
+          state.currentFilter = state.currentFilter.filter((item) =>
+            cashCodes.includes(item.code),
+          )
+          break
+        default:
+          break
+      }
+    }
   }
 }
 
