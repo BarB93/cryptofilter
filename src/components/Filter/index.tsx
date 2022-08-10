@@ -27,7 +27,7 @@ const Filter: React.FC = () => {
 
   const toOptions = currentFilter.map((item) => ({
     value: item,
-    label: item.to,
+    label: item.name,
   }))
 
   return (
@@ -56,6 +56,7 @@ const Filter: React.FC = () => {
             }
           }}
           isOptionSelected={(option) => option.value.code === 'BTC'}
+          // defaultValue={fromOptions[0]}
         />
       </div>
       <div className={clsx(styles.filterBlock, styles.to)}>
@@ -72,7 +73,11 @@ const Filter: React.FC = () => {
             </li>
           ))}
         </ul>
-        <Select options={toOptions} />
+        <Select
+          options={toOptions}
+          defaultValue={toOptions[0]}
+          isDisabled={!toOptions.length}
+        />
       </div>
     </div>
   )

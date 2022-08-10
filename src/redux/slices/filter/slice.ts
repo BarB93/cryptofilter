@@ -15,12 +15,17 @@ const initialState: FilterSliceState = {
   isLoadingFilter: true,
 }
 
+const cryptoCodes = ['BTC', 'ETH', 'USDTTRC']
+const bankCodes = ['ACRUB', 'SBERRUB', 'TCSBRUB']
+const cashCodes = ['CASHRUB', 'CASHUSD']
+
 const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
     setCategoryFromId: (state, action: PayloadAction<number>) => {
       state.categoryFromId = action.payload
+      checkFilter(state)
     },
     setCategoryToId: (state, action: PayloadAction<number>) => {
       state.categoryToId = action.payload
@@ -39,6 +44,7 @@ const filterSlice = createSlice({
     builder.addCase(fetchDirections.fulfilled, (state, action) => {
       state.directions = action.payload
       state.currentDirections = action.payload
+      state.currentFrom = action.payload[0]
       state.isLoadingDirections = false
     })
     builder.addCase(fetchDirections.rejected, (state, action) => {})
@@ -56,14 +62,45 @@ const filterSlice = createSlice({
 })
 
 function checkFilter(state: FilterSliceState) {
-  if (state.currentFrom) {
-    const filterItem = state.filter.filter(
-      (item) => item.from.code === state.currentFrom?.code,
-    )
+  if (state.currentFrom && state.directions && state.filter) {
+    switch (state.categoryFromId) {
+      case 0:
+        state.currentDirections = state.directions
+        state.currentFilter =
+          state.filter.find((item) => {
+            debugger
+            return item.from.code === state.currentFrom?.code
+          })?.to || []
 
-    if (filterItem) {
-      state.currentTo = filterItem[0].to
+        break
+      case 1:
+        state.currentDirections = state.directions.filter((item) =>
+          cryptoCodes.includes(item.code),
+        )
+        break
+      case 2:
+        state.currentDirections = state.directions.filter((item) =>
+          cashCodes.includes(item.code),
+        )
+        break
+      case 3:
+        state.currentDirections = state.directions.filter((item) =>
+          bankCodes.includes(item.code),
+        )
+        break
+      default:
+        state.currentDirections = []
+        state.currentFilter = []
+        break
     }
+
+    // const filterItem = state.filter.filter(
+    //   (item) => item.from.code === state.currentFrom?.code,
+    // )
+
+    // if (filterItem) {
+    //   state.currentTo = filterItem[0].to
+    // }
   }
 }
 
