@@ -13,6 +13,8 @@ const initialState: FilterSliceState = {
   categoryToId: 0,
   isLoadingDirections: true,
   isLoadingFilter: true,
+  fromOptions: [],
+  toOptions: [],
 }
 
 const cryptoCodes = ['BTC', 'ETH', 'USDTTRC']
@@ -47,6 +49,10 @@ const filterSlice = createSlice({
       state.currentDirections = action.payload
       state.currentFrom = action.payload[0]
       state.isLoadingDirections = false
+      state.fromOptions = state.currentDirections.map((item) => ({
+        value: item,
+        label: item.name,
+      }))
     })
     builder.addCase(fetchDirections.rejected, (state, action) => {})
 
@@ -127,6 +133,11 @@ function checkFilter(state: FilterSliceState) {
         default:
           break
       }
+
+      state.toOptions = state.currentFilter.map((item) => ({
+        value: item,
+        label: item.name,
+      }))
     }
   }
 }

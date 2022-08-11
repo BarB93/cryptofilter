@@ -39,6 +39,16 @@ export type FilterItem = {
   to: ToDirection[]
 }
 
+type OptionsFromItem = {
+  value: ToDirection
+  label: string
+}
+
+type OptionsToItem = {
+  value: DirectionsItem
+  label: string
+}
+
 export type FilterSliceState = {
   directions: DirectionsItem[]
   currentDirections: DirectionsItem[]
@@ -50,4 +60,6 @@ export type FilterSliceState = {
   isLoadingDirections: boolean
   currentFrom: DirectionsItem | null
   currentTo: ToDirection[] | null
+  fromOptions: OptionsFromItem[]
+  toOptions: OptionsToItem[]
 }
