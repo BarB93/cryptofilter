@@ -1,25 +1,25 @@
-// enum Сryptocurrency {
+// export enum СryptocurrencyEnum {
 //   BTC = 'BTC',
 //   ETH = 'ETH',
 //   USDTTRC = 'USDTTRC',
 // }
 
-// enum Banks {
+// export enum BanksEnum {
 //   ACRUB = 'ACRUB',
 //   SBERRUB = 'SBERRUB',
 //   TCSBRUB = 'TCSBRUB',
 // }
 
-// enum Cash {
+// export enum CashEnum {
 //   CASHUSD = 'CASHUSD',
 //   CASHRUB = 'CASHRUB',
 // }
 
-type Сryptocurrency = 'BTC' | 'ETH' | 'USDTTRC'
+type Cryptocurrencies = 'BTC' | 'ETH' | 'USDTTRC'
 type Banks = 'ACRUB' | 'SBERRUB' | 'TCSBRUB'
-type Cash = 'CASHUSD' | 'CASHRUB'
+type Cash = 'CASHRUB' | 'CASHUSD'
 
-type Code = Сryptocurrency | Banks | Cash
+type Code = Cryptocurrencies | Banks | Cash
 
 export type DirectionsItem = {
   code: Code
@@ -39,15 +39,27 @@ export type FilterItem = {
   to: ToDirection[]
 }
 
+type OptionsFromItem = {
+  value: ToDirection
+  label: string
+}
+
+type OptionsToItem = {
+  value: DirectionsItem
+  label: string
+}
+
 export type FilterSliceState = {
   directions: DirectionsItem[]
   currentDirections: DirectionsItem[]
   filter: FilterItem[]
-  currentFilter: FilterItem[]
+  currentFilter: ToDirection[]
   categoryToId: number
   categoryFromId: number
   isLoadingFilter: boolean
   isLoadingDirections: boolean
   currentFrom: DirectionsItem | null
   currentTo: ToDirection[] | null
+  fromOptions: OptionsFromItem[]
+  toOptions: OptionsToItem[]
 }

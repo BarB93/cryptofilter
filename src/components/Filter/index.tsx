@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 import clsx from 'clsx'
 
@@ -17,17 +17,15 @@ const filtersTo = ['Все', 'Криптовалюты', 'Банки RUB', 'Ба
 
 const Filter: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { currentDirections, currentFilter, filter, categoryToId, categoryFromId } =
+  const { currentDirections, currentFilter, categoryToId, categoryFromId } =
     useAppSelector((state) => state.filter)
-
-  const fromOptions = currentDirections.map((item) => ({
+  const toOptions = currentFilter.map((item) => ({
     value: item,
     label: item.name,
   }))
-
-  const toOptions = currentFilter.map((item) => ({
+  const fromOptions = currentDirections.map((item) => ({
     value: item,
-    label: item.to,
+    label: item.name,
   }))
 
   return (
@@ -51,11 +49,13 @@ const Filter: React.FC = () => {
         <Select
           options={fromOptions}
           onChange={(value) => {
-            if (value?.value !== undefined) {
+            if (value?.label !== undefined) {
               dispatch(setCurrentFrom(value.value))
             }
           }}
           isOptionSelected={(option) => option.value.code === 'BTC'}
+          // defaultValue={fromOptions[0]}
+          isDisabled={!fromOptions.length}
         />
       </div>
       <div className={clsx(styles.filterBlock, styles.to)}>
@@ -72,7 +72,11 @@ const Filter: React.FC = () => {
             </li>
           ))}
         </ul>
-        <Select options={toOptions} />
+        <Select
+          options={toOptions}
+          defaultValue={toOptions[0]}
+          isDisabled={!toOptions.length}
+        />
       </div>
     </div>
   )
